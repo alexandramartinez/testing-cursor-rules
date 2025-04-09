@@ -1,0 +1,22 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# MuleSoft Best Practices
+
+The following rules apply for MuleSoft projects:
+
+- All the global element configurations have to go inside a `global.xml` file unless a different name is provided for this file.
+- Properties like `host` and `port` should not be hardcoded in the XML files. These values should be referenced from (a) properties file(s).
+- Whenever a Mule Runtime version is added to the `pom.xml` file, this version has to match the version from the `mule-artifact.json` file (located at the root directory).
+- Always make sure the properties files added to the project are being correctly configured with a Configuration Properties global element.
+- When adding dependencies to the `pom.xml`, ensure the version is compatible with the Mule Runtime version specified in `mule-artifact.json` file (located at the root directory) AND is compatible with the Java version specified in the same file.
+- Always verify connector compatibility by checking the official MuleSoft documentation at https://docs.mulesoft.com/release-notes/connector/anypoint-connector-release-notes before adding or updating dependencies.
+- When determining the latest compatible version of a connector, always check the MuleSoft Maven repository (https://repository.mulesoft.org/releases/) to find the actual latest available version. Do not assume version numbers or make up version numbers.
+- Configuration properties should be stored in YAML files with the naming convention `{env}-properties.yaml` (e.g., `local-properties.yaml`, `dev-properties.yaml`).
+- The configuration-properties module must be added to the `pom.xml` with the correct version that matches the Mule Runtime version.
+- The configuration properties element in `global.xml` should use the format `<configuration-properties file="${env}-properties.yaml" doc:name="Configuration properties"/>`.
+- The environment variable (`env`) should be set as a global property in `global.xml` with a default value (e.g., `<global-property name="env" value="local" doc:name="Environment"/>`).
+- All values in YAML properties files should be strings, including numeric values. For example, use `port: "8081"` instead of `port: 8081`.
+- The `.gitignore` file must include entries for IDE-specific files (e.g., `.vscode/`) and test resources (e.g., `src/test/resources/embedded*`) to prevent them from being committed to the repository. 
